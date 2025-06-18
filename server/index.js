@@ -10,6 +10,7 @@ const connectDB = require("./config/database");
 const eventRoutes = require("./routes/events");
 const postRoutes = require("./routes/Post");
 const createPostRoutes = require("./routes/CreatePosts");
+const recognitionRoutes = require("./routes/recognitions");
 
 // Import middleware
 const errorHandler = require("./middleware/errorHandler");
@@ -38,6 +39,7 @@ app.use('/uploads', express.static('public/uploads'));
 app.use("/api/events", eventRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/createposts", createPostRoutes);
+app.use("/api/recognitions", recognitionRoutes);
 
 // Health check route
 app.get("/api/health", (req, res) => {
@@ -56,6 +58,7 @@ app.get("/", (req, res) => {
     version: "1.0.0",
     endpoints: {
       events: "/api/events",
+      recognitions: "/api/recognitions",
       health: "/api/health",
     },
   });
@@ -72,7 +75,7 @@ app.use("*", (req, res) => {
   });
 });
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 4000;
 
 app.listen(PORT, () => {
   console.log(`🚀 HRMS Server is running on port ${PORT}`);
