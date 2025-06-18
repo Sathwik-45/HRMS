@@ -8,6 +8,8 @@ const connectDB = require("./config/database");
 
 // Import routes
 const eventRoutes = require("./routes/events");
+const postRoutes = require("./routes/Post");
+const createPostRoutes = require("./routes/CreatePosts");
 
 // Import middleware
 const errorHandler = require("./middleware/errorHandler");
@@ -29,8 +31,13 @@ app.use(
 app.use(bodyParser.json({ limit: "10mb" }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "10mb" }));
 
+// Serve static files for uploaded media
+app.use('/uploads', express.static('public/uploads'));
+
 // Routes
 app.use("/api/events", eventRoutes);
+app.use("/api/posts", postRoutes);
+app.use("/api/createposts", createPostRoutes);
 
 // Health check route
 app.get("/api/health", (req, res) => {
