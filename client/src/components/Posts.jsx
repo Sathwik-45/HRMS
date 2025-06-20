@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from "react";
 
-const CURRENT_USER = {
-  name: "John Doe",
-  position: "HR Consultant",
-  avatar: "https://randomuser.me/api/portraits/men/47.jpg",
-};
 
-const Posts = () => {
+
+const Posts = ({user}) => {
   const [posts, setPosts] = useState([]);
   const [commentInputs, setCommentInputs] = useState({});
   const [expandedComments, setExpandedComments] = useState({});
@@ -14,6 +10,7 @@ const Posts = () => {
   const [savedPosts, setSavedPosts] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const CURRENT_USER =user
 
   const fetchPosts = async (useRefresh = false) => {
     setLoading(true);
@@ -299,12 +296,12 @@ const Posts = () => {
         <div className="lg:w-1/4 w-full space-y-6">
           <div className="bg-white p-4 shadow rounded text-center">
             <img
-              src={CURRENT_USER.avatar}
+              src={CURRENT_USER.image}
               alt="User Avatar"
               className="w-24 h-24 rounded-full mx-auto mb-2"
             />
             <h2 className="text-xl font-semibold">{CURRENT_USER.name}</h2>
-            <p className="text-sm text-gray-500">{CURRENT_USER.position}</p>
+            <p className="text-sm text-gray-500">{CURRENT_USER.role}</p>
             <div className="mt-4 text-sm text-gray-600 space-y-1">
               <p>
                 <strong>1,284</strong> connections

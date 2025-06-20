@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./components/Dashboard";
 import Chat from "./components/Chat";
@@ -8,12 +8,31 @@ import Recognition from "./components/Recognition";
 import Events from "./components/Events";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import axios from "axios";
 // import "./App.css"; // Removed to avoid conflicts with Tailwind CSS
 
 function App() {
   const [activeComponent, setActiveComponent] = useState("dashboard");
   const [user, setUser] = useState(null);
   const [authMode, setAuthMode] = useState("login"); // "login" or "register"
+
+  const loadUser = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:4000/api/isvalidUser",
+        { withCredentials: true }
+      );
+      if (response.data.success) {
+        setUser(response.data.user);
+      } else {
+        setUser(null);
+      }
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    loadUser();
+  }, []);
 
   const handleLogin = (userData) => {
     setUser(userData);
@@ -35,9 +54,9 @@ function App() {
       case "chat":
         return <Chat />;
       case "create-post":
-        return <CreatePost />;
+        return <CreatePost  user={user} />;
       case "posts":
-        return <Posts />;
+        return <Posts user={user} />;
       case "leaderboard":
         return <Recognition />;
       case "events":
@@ -53,16 +72,12 @@ function App() {
       return (
         <Login
           onLogin={handleLogin}
-          onSwitchToRegister={() => setAuthMode("register")}
+          setAuthMode={setAuthMode}
+          setUser={setUser}
         />
       );
     } else {
-      return (
-        <Register
-          onRegister={handleRegister}
-          onSwitchToLogin={() => setAuthMode("login")}
-        />
-      );
+      return <Register onRegister={handleRegister} setAuthMode={setAuthMode} />;
     }
   }
 
@@ -76,12 +91,11 @@ function App() {
           setActiveComponent={setActiveComponent}
           user={user}
           onLogout={handleLogout}
+          setUser={setUser}
         />
       </div>
       {/* Main Content */}
-      <div className="flex-1 overflow-auto bg-gray-50">
-        {renderComponent()}
-      </div>
+      <div className="flex-1 overflow-auto bg-gray-50">{renderComponent()}</div>
     </div>
   );
 }

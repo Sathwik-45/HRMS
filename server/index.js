@@ -1,7 +1,10 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 require("dotenv").config({ path: __dirname + "/.env" });
+
 
 // Import database connection
 const connectDB = require("./config/database");
@@ -11,6 +14,7 @@ const eventRoutes = require("./routes/events");
 const postRoutes = require("./routes/Post");
 const createPostRoutes = require("./routes/CreatePosts");
 const recognitionRoutes = require("./routes/recognitions");
+const authRoutes = require("./routes/auth");
 
 // Import middleware
 const errorHandler = require("./middleware/errorHandler");
@@ -20,6 +24,10 @@ const app = express();
 
 // Connect to database
 connectDB();
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(cookieParser()); 
+
 
 // Middleware
 app.use(
@@ -33,13 +41,14 @@ app.use(bodyParser.json({ limit: "10mb" }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "10mb" }));
 
 // Serve static files for uploaded media
-app.use('/uploads', express.static('public/uploads'));
+app.use("/uploads", express.static("public/uploads"));
 
 // Routes
 app.use("/api/events", eventRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/createposts", createPostRoutes);
 app.use("/api/recognitions", recognitionRoutes);
+app.use("/api/", authRoutes);
 
 // Health check route
 app.get("/api/health", (req, res) => {

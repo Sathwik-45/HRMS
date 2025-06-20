@@ -69,17 +69,7 @@ const Dashboard = ({ user, onLogout }) => {
   ];
 
   // User profile data
-  const userProfile = {
-    name: "John Doe",
-    role: "Administrator",
-    department: "IT Department",
-    email: "john.doe@company.com",
-    phone: "+1 (555) 123-4567",
-    joinDate: "January 15, 2022",
-    employeeId: "EMP001",
-    manager: "Sarah Wilson",
-    location: "New York Office",
-  };
+  const userProfile = user;
 
   // Handle search functionality
   const handleSearch = (value) => {
@@ -475,7 +465,11 @@ const Dashboard = ({ user, onLogout }) => {
               {/* User Avatar and Basic Info */}
               <div className="flex items-center space-x-4 mb-6">
                 <div className="w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-xl">
-                  JD
+                <img
+                    src={user.image}
+                    alt={user.name}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <div>
                   <h4 className="text-xl font-bold text-gray-900">
@@ -521,7 +515,7 @@ const Dashboard = ({ user, onLogout }) => {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-gray-900">Phone</p>
-                    <p className="text-sm text-gray-600">{userProfile.phone}</p>
+                    <p className="text-sm text-gray-600">{userProfile.contact}</p>
                   </div>
                 </div>
 

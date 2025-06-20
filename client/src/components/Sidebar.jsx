@@ -1,8 +1,26 @@
 import { useState } from "react";
+import { ToastContainer,toast } from "react-toastify";
+import axios from "axios";
 
-const Sidebar = ({ activeComponent, setActiveComponent, user, onLogout }) => {
+const Sidebar = ({ activeComponent, setActiveComponent, user, onLogout ,setUser }) => {
   const [hoveredItem, setHoveredItem] = useState(null);
   const [logoHovered, setLogoHovered] = useState(false);
+
+
+  const handleSubmit = async () => {
+      try {
+      const response = await axios.get("http://localhost:4000/api/signOut", { withCredentials: true });
+      if (response.data.success) {
+       setUser(null)
+      }
+      } catch (error) {
+        toast.error(error?.response?.data?.message || "Something went wrong");
+      }
+  };
+
+
+
+
 
   const menuItems = [
     {
@@ -129,7 +147,7 @@ const Sidebar = ({ activeComponent, setActiveComponent, user, onLogout }) => {
             </div>
           </div>
           <button
-            onClick={onLogout}
+            onClick={()=>{handleSubmit()}}
             className="w-8 h-8 bg-gray-100 hover:bg-red-100 rounded-lg flex items-center justify-center text-gray-600 hover:text-red-600 transition-colors"
             title="Logout"
           >
