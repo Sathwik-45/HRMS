@@ -52,7 +52,7 @@ function App() {
       case "dashboard":
         return <Dashboard user={user} onLogout={handleLogout} />;
       case "chat":
-        return <Chat />;
+        return <Chat user={user} />;
       case "create-post":
         return <CreatePost  user={user} />;
       case "posts":

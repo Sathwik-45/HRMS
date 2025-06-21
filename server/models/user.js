@@ -33,6 +33,38 @@ const userSchema = new mongoose.Schema(
       default:
         "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400",
     },
+    // Chat-related fields
+    isOnline: {
+      type: Boolean,
+      default: false,
+    },
+    socketId: {
+      type: String,
+      default: null,
+    },
+    lastSeen: {
+      type: Date,
+      default: Date.now,
+    },
+    // Additional user fields for better profile management
+    department: {
+      type: String,
+      default: "General",
+    },
+    manager: {
+      type: String,
+      default: "Manager",
+    },
+    joinDate: {
+      type: String,
+      default: "2025-06-21T04:49:21.047",
+    },
+    employeeId: {
+      type: String,
+      default: function() {
+        return this._id;
+      },
+    },
   },
   {
     timestamps: true,
