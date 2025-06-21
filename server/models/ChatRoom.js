@@ -84,6 +84,10 @@ const chatRoomSchema = new mongoose.Schema(
         type: Boolean,
         default: true,
       },
+      allowMemberInvites: {
+        type: Boolean,
+        default: true,
+      },
       moderationEnabled: {
         type: Boolean,
         default: false,
@@ -97,6 +101,10 @@ const chatRoomSchema = new mongoose.Schema(
         default: 30,
         min: 1,
         max: 365,
+      },
+      muteNotifications: {
+        type: Boolean,
+        default: false,
       },
     },
   },
@@ -127,6 +135,10 @@ chatRoomSchema.virtual("formattedLastActivity").get(function () {
   return this.lastActivity.toLocaleDateString();
 });
 
+// Ensure virtual fields are serialized
+chatRoomSchema.set('toJSON', { virtuals: true });
+chatRoomSchema.set('toObject', { virtuals: true });
+
 // Method to check if user is a member
 chatRoomSchema.methods.isMember = function (userId) {
   return this.members.some(member => member.user.toString() === userId.toString());
@@ -143,6 +155,13 @@ chatRoomSchema.methods.isModerator = function (userId) {
   return this.members.some(
     member => member.user.toString() === userId.toString() && member.role === "moderator"
   );
+};
+
+// Method to check if user can moderate
+chatRoomSchema.methods.canModerate = function(userId) {
+  if (this.isAdmin(userId)) return true;
+  const member = this.members.find(member => member.user.toString() === userId.toString());
+  return member && (member.role === 'moderator' || member.role === 'admin');
 };
 
 // Method to add a member
@@ -219,7 +238,7 @@ chatRoomSchema.statics.getUserRooms = function (userId, limit = 20) {
 
 // Pre-save middleware to update lastActivity
 chatRoomSchema.pre("save", function (next) {
-  if (this.isModified("messageCount")) {
+  if (this.isModified("messageCount") || this.isModified('members')) {
     this.lastActivity = new Date();
   }
   next();

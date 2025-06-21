@@ -25,7 +25,7 @@ const messageSchema = new mongoose.Schema(
     },
     messageType: {
       type: String,
-      enum: ["text", "image", "file", "emoji"],
+      enum: ["text", "image", "file", "audio", "video", "emoji"],
       default: "text",
     },
     fileName: {
@@ -34,6 +34,10 @@ const messageSchema = new mongoose.Schema(
     },
     fileUrl: {
       type: String,
+      default: null,
+    },
+    fileSize: {
+      type: Number,
       default: null,
     },
     isGlobal: {
