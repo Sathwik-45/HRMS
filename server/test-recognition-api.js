@@ -63,7 +63,7 @@ async function testRecognitionAPI() {
     console.error('❌ Test failed:', error.response?.data || error.message);
     
     if (error.code === 'ECONNREFUSED') {
-      console.log('\n💡 Make sure the server is running on port 4000');
+      console.log('\n💡 Make sure the server is running on port 5000');
       console.log('   Run: node index.js');
     }
   }

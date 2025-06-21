@@ -37,7 +37,7 @@ const CreatePost = () => {
   useEffect(() => {
     // UPDATED: Changed endpoint from /api/events to /api/createposts
     axios
-      .get("http://localhost:4000/api/createposts")
+      .get("http://localhost:5000/api/createposts")
       .then((res) => {
         setPosts(res.data);
       })
@@ -120,7 +120,7 @@ const CreatePost = () => {
       let res;
       if (editingPostId) {
         // UPDATED: Changed endpoint from /api/events to /api/createposts
-        res = await axios.put(`http://localhost:4000/api/createposts/${editingPostId}`, formData, {
+        res = await axios.put(`http://localhost:5000/api/createposts/${editingPostId}`, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
         const updatedPosts = posts.map((post) =>
@@ -134,7 +134,7 @@ const CreatePost = () => {
         }
       } else {
         // UPDATED: Changed endpoint from /api/events to /api/createposts
-        res = await axios.post("http://localhost:4000/api/createposts", formData, {
+        res = await axios.post("http://localhost:5000/api/createposts", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
         setPosts([res.data, ...posts]);
@@ -168,7 +168,7 @@ const CreatePost = () => {
   const handleDelete = () => {
     // UPDATED: Changed endpoint from /api/events to /api/createposts
     axios
-      .delete(`http://localhost:4000/api/createposts/${confirmDeleteId}`)
+      .delete(`http://localhost:5000/api/createposts/${confirmDeleteId}`)
       .then(() => {
         setPosts(posts.filter((post) => post.id !== confirmDeleteId));
         setConfirmDeleteId(null);

@@ -45,7 +45,7 @@ const Chat = ({ user }) => {
 
     console.log('Initializing socket connection for user:', userId);
 
-    const newSocket = io('http://localhost:4000', {
+    const newSocket = io('http://localhost:5000', {
       withCredentials: true,
     });
 
@@ -133,7 +133,7 @@ const Chat = ({ user }) => {
   // Load global messages
   const loadMessages = async () => {
     try {
-      const response = await axios.get('http://localhost:4000/api/chat/messages', {
+      const response = await axios.get('http://localhost:5000/api/chat/messages', {
         withCredentials: true,
       });
       if (response.data.success) {
@@ -148,7 +148,7 @@ const Chat = ({ user }) => {
   const loadUsers = async () => {
     try {
       console.log('Loading users...');
-      const response = await axios.get('http://localhost:4000/api/chat/users', {
+      const response = await axios.get('http://localhost:5000/api/chat/users', {
         withCredentials: true,
       });
       console.log('Users response:', response.data);
@@ -165,7 +165,7 @@ const Chat = ({ user }) => {
   const loadChatRooms = async () => {
     try {
       const userId = getUserId();
-      const response = await axios.get(`http://localhost:4000/api/chat/rooms?userId=${userId}`, {
+      const response = await axios.get(`http://localhost:5000/api/chat/rooms?userId=${userId}`, {
         withCredentials: true,
       });
       if (response.data.success) {
@@ -181,7 +181,7 @@ const Chat = ({ user }) => {
     try {
       const currentUserId = getUserId();
       const response = await axios.get(
-        `http://localhost:4000/api/chat/messages/private/${targetUserId}?currentUserId=${currentUserId}`,
+        `http://localhost:5000/api/chat/messages/private/${targetUserId}?currentUserId=${currentUserId}`,
         { withCredentials: true }
       );
       if (response.data.success) {
@@ -200,7 +200,7 @@ const Chat = ({ user }) => {
     try {
       const userId = getUserId();
       const response = await axios.get(
-        `http://localhost:4000/api/chat/rooms/${roomId}/messages?userId=${userId}`,
+        `http://localhost:5000/api/chat/rooms/${roomId}/messages?userId=${userId}`,
         { withCredentials: true }
       );
       if (response.data.success) {
@@ -560,7 +560,7 @@ const Chat = ({ user }) => {
               };
 
               try {
-                const response = await axios.post('http://localhost:4000/api/chat/rooms', roomData, {
+                const response = await axios.post('http://localhost:5000/api/chat/rooms', roomData, {
                   withCredentials: true,
                 });
                 if (response.data.success) {
@@ -571,7 +571,7 @@ const Chat = ({ user }) => {
                   // Add users to room one by one
                   for (const userId of selectedUserIds) {
                     try {
-                      await axios.post(`http://localhost:4000/api/chat/rooms/${response.data.data._id}/join`, {
+                      await axios.post(`http://localhost:5000/api/chat/rooms/${response.data.data._id}/join`, {
                         userId: userId
                       }, { withCredentials: true });
                     } catch (joinError) {

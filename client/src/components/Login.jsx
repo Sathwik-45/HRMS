@@ -15,7 +15,7 @@ const Login = ({setAuthMode,setUser}) => {
     };
     setLoding(true);
     try {
-      const response = await axios.post("http://localhost:4000/api/signIn", data, { withCredentials: true });
+      const response = await axios.post("http://localhost:5000/api/signIn", data, { withCredentials: true });
       if (response.data.success) {
        setUser(response.data.user)
       }

@@ -9,7 +9,7 @@ const Sidebar = ({ activeComponent, setActiveComponent, user, onLogout ,setUser 
 
   const handleSubmit = async () => {
       try {
-      const response = await axios.get("http://localhost:4000/api/signOut", { withCredentials: true });
+      const response = await axios.get("http://localhost:5000/api/signOut", { withCredentials: true });
       if (response.data.success) {
        setUser(null)
       }

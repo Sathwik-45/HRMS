@@ -32,7 +32,7 @@ const Register = ({ setAuthMode }) => {
     setLoding(true);
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/signUp",
+        "http://localhost:5000/api/signUp",
         data
       );
       toast(response.data.message || "Internal Server Error");

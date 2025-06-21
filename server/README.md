@@ -26,9 +26,10 @@ npm install
 2. Set up environment variables:
 Create a `.env` file in the server directory with:
 ```
-PORT=8080
+PORT=5000
 MONGODB_URI=mongodb://localhost:27017/hrms_events
 NODE_ENV=development
+JWT_SECRET=your-secure-jwt-secret-key
 ```
 
 3. Start MongoDB service on your local machine
@@ -112,6 +113,7 @@ The API includes comprehensive error handling for:
 The server is configured to accept requests from:
 - http://localhost:3000 (Create React App)
 - http://localhost:5173 (Vite React App)
+- http://localhost:5174 (Vite React App - Alternative Port)
 
 ## Response Format
 All API responses follow this format:

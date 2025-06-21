@@ -113,7 +113,7 @@ const Events = () => {
   const fetchEventsFromDatabase = async () => {
     try {
       console.log("🔄 Fetching events from database...");
-      const response = await fetch("http://localhost:4000/api/events");
+      const response = await fetch("http://localhost:5000/api/events");
       console.log("📡 Response status:", response.status);
 
       const result = await response.json();
@@ -169,7 +169,7 @@ const Events = () => {
       console.log("🗑️ Deleting event with ID:", eventId);
 
       const response = await fetch(
-        `http://localhost:4000/api/events/${eventId}`,
+        `http://localhost:5000/api/events/${eventId}`,
         {
           method: "DELETE",
         }
@@ -240,7 +240,7 @@ const Events = () => {
         };
 
         // Send data to backend API
-        const response = await fetch("http://localhost:4000/api/events", {
+        const response = await fetch("http://localhost:5000/api/events", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

@@ -18,8 +18,8 @@ const Posts = ({user}) => {
 
     try {
       const endpoint = useRefresh ?
-        "http://localhost:4000/api/posts/refresh" :
-        "http://localhost:4000/api/posts";
+        "http://localhost:5000/api/posts/refresh" :
+        "http://localhost:5000/api/posts";
 
       const res = await fetch(endpoint);
       if (!res.ok) throw new Error("Failed to fetch posts");
@@ -81,7 +81,7 @@ const Posts = ({user}) => {
 
   const handleLike = async (id) => {
     try {
-      const res = await fetch(`http://localhost:4000/api/posts/${id}/like`, {
+      const res = await fetch(`http://localhost:5000/api/posts/${id}/like`, {
         method: "PATCH",
       });
       if (!res.ok) throw new Error("Failed to update like");
@@ -101,7 +101,7 @@ const Posts = ({user}) => {
     if (!commentText) return;
 
     try {
-      const res = await fetch(`http://localhost:4000/api/posts/${id}/comment`, {
+      const res = await fetch(`http://localhost:5000/api/posts/${id}/comment`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: CURRENT_USER.name, text: commentText }),
@@ -124,7 +124,7 @@ const Posts = ({user}) => {
 
   const toggleSave = async (id) => {
     try {
-      const res = await fetch(`http://localhost:4000/api/posts/${id}/save`, {
+      const res = await fetch(`http://localhost:5000/api/posts/${id}/save`, {
         method: "PATCH",
       });
       if (!res.ok) throw new Error("Failed to toggle save");

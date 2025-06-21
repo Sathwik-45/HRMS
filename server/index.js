@@ -53,7 +53,7 @@ app.use(cookieParser());
 // Middleware
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://localhost:5173"], // React dev servers
+    origin: ["http://localhost:3000", "http://localhost:5173", "http://localhost:5174"], // React dev servers
     credentials: true,
   })
 );
@@ -329,7 +329,7 @@ io.on("connection", (socket) => {
   });
 });
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 5000;
 
 server.listen(PORT, () => {
   console.log(`🚀 HRMS Server is running on port ${PORT}`);

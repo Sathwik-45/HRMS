@@ -16,11 +16,11 @@ async function testCreateEvent() {
     console.log('🧪 Testing event creation...');
     console.log('Event data:', testEvent);
     
-    const response = await axios.post('http://localhost:4000/api/events', testEvent);
+    const response = await axios.post('http://localhost:5000/api/events', testEvent);
     console.log('✅ Success! Event created:', response.data);
-    
+
     // Now get all events to verify
-    const getAllResponse = await axios.get('http://localhost:4000/api/events');
+    const getAllResponse = await axios.get('http://localhost:5000/api/events');
     console.log('📊 All events in database:', getAllResponse.data);
     
   } catch (error) {
