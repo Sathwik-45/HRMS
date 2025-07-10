@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import { useState } from "react";
 
-const Login = ({setAuthMode,setUser}) => {
-  const [Loding, setLoding] = useState(false);
+const Login = ({ setAuthMode, setUser }) => {
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -13,16 +12,21 @@ const Login = ({setAuthMode,setUser}) => {
       email: formData.get("email"),
       password: formData.get("password"),
     };
-    setLoding(true);
+    setLoading(true);
     try {
-      const response = await axios.post("http://localhost:5000/api/signIn", data, { withCredentials: true });
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/api/signIn`,
+        data,
+        { withCredentials: true }
+      );
       if (response.data.success) {
-       setUser(response.data.user)
+        setUser(response.data.user);
+        toast.success("Login successful!");
       }
-      } catch (error) {
-        toast.error(error?.response?.data?.message || "Something went wrong");
-      }
-    setLoding(false);
+    } catch (error) {
+      toast.error(error?.response?.data?.message || "Something went wrong");
+    }
+    setLoading(false);
   };
 
   return (
@@ -35,8 +39,6 @@ const Login = ({setAuthMode,setUser}) => {
           </h2>
 
           <form className="space-y-4" onSubmit={handleSubmit}>
-          
-
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Email
@@ -44,6 +46,7 @@ const Login = ({setAuthMode,setUser}) => {
               <input
                 type="email"
                 name="email"
+                required
                 className="w-full text-black px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
                 placeholder="your@email.com"
               />
@@ -56,6 +59,7 @@ const Login = ({setAuthMode,setUser}) => {
               <input
                 type="password"
                 name="password"
+                required
                 className="w-full text-black px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
                 placeholder="••••••••"
               />
@@ -73,17 +77,17 @@ const Login = ({setAuthMode,setUser}) => {
             <button
               type="submit"
               className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 rounded-lg transition-colors"
-              disabled={Loding}
+              disabled={loading}
             >
-              {Loding ? "Loading..." : "Sign Up"}
+              {loading ? "Loading..." : "Sign In"}
             </button>
           </form>
 
           <div className="mt-6 text-center text-sm text-gray-600">
-            Already have an account?
+            Don’t have an account?
             <div
-            onClick={()=>{setAuthMode("regester")}}
-              className="text-indigo-600 hover:text-indigo-500 font-medium"
+              onClick={() => setAuthMode("register")}
+              className="text-indigo-600 hover:text-indigo-500 font-medium cursor-pointer"
             >
               Sign up
             </div>

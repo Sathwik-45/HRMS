@@ -19,9 +19,12 @@ function App() {
 
   const loadUser = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/isvalidUser", {
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/api/isvalidUser`,
+        {
+          withCredentials: true,
+        }
+      );
       if (response.data.success) {
         setUser(response.data.user);
       } else {
