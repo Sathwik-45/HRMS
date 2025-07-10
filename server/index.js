@@ -5,66 +5,52 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const http = require("http");
 const socketIo = require("socket.io");
-require("dotenv").config({ path: __dirname + "/.env" });
 
-
-// Import database connection
 const connectDB = require("./config/database");
-
-// Import routes
 const eventRoutes = require("./routes/events");
 const postRoutes = require("./routes/Post");
 const createPostRoutes = require("./routes/CreatePosts");
 const recognitionRoutes = require("./routes/recognitions");
 const authRoutes = require("./routes/auth");
 const chatRoutes = require("./routes/chat");
-
-// Import models
 const User = require("./models/user");
 const Message = require("./models/Message");
 const ChatRoom = require("./models/ChatRoom");
-
-// Import middleware
 const errorHandler = require("./middleware/errorHandler");
 
-// Initialize express app
 const app = express();
 const server = http.createServer(app);
 
-// Initialize Socket.IO
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:3000",
+  "http://localhost:5174",
+  "https://your-vercel-app.vercel.app" // ✅ Add your deployed frontend URL
+];
+
 const io = socketIo(server, {
   cors: {
-    origin: ["http://localhost:3000", "http://localhost:5173", "http://localhost:5174"],
+    origin: allowedOrigins,
     methods: ["GET", "POST"],
     credentials: true,
   },
 });
 
-// Store connected users
 const connectedUsers = new Map();
-
-// Connect to database
 connectDB();
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
-app.use(cookieParser()); 
+app.use(cookieParser());
 
-
-// Middleware
-app.use(
-  cors({
-    origin: ["http://localhost:3000", "http://localhost:5173", "http://localhost:5174"], // React dev servers
-    credentials: true,
-  })
-);
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true,
+}));
 
 app.use(bodyParser.json({ limit: "10mb" }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "10mb" }));
-
-// Serve static files for uploaded media
 app.use("/uploads", express.static("public/uploads"));
 
-// Routes
 app.use("/api/events", eventRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/createposts", createPostRoutes);
@@ -72,7 +58,6 @@ app.use("/api/recognitions", recognitionRoutes);
 app.use("/api/", authRoutes);
 app.use("/api/chat", chatRoutes);
 
-// Health check route
 app.get("/api/health", (req, res) => {
   res.status(200).json({
     success: true,
@@ -81,7 +66,6 @@ app.get("/api/health", (req, res) => {
   });
 });
 
-// Default route
 app.get("/", (req, res) => {
   res.status(200).json({
     success: true,
@@ -95,10 +79,7 @@ app.get("/", (req, res) => {
   });
 });
 
-// Error handler middleware (should be last)
 app.use(errorHandler);
-
-// Handle 404 routes
 app.use("*", (req, res) => {
   res.status(404).json({
     success: false,
