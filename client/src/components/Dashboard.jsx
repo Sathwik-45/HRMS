@@ -22,56 +22,17 @@ const Dashboard = ({ user, onLogout }) => {
     };
   }, []);
 
-  // Sample employee data for search
   const employees = [
-    {
-      id: 1,
-      name: "John Doe",
-      role: "Administrator",
-      department: "IT",
-      email: "john.doe@company.com",
-    },
-    {
-      id: 2,
-      name: "Sarah Wilson",
-      role: "HR Manager",
-      department: "Human Resources",
-      email: "sarah.wilson@company.com",
-    },
-    {
-      id: 3,
-      name: "Michael Chen",
-      role: "Developer",
-      department: "Engineering",
-      email: "michael.chen@company.com",
-    },
-    {
-      id: 4,
-      name: "Emma Davis",
-      role: "Designer",
-      department: "Design",
-      email: "emma.davis@company.com",
-    },
-    {
-      id: 5,
-      name: "Alice Cooper",
-      role: "Project Manager",
-      department: "Operations",
-      email: "alice.cooper@company.com",
-    },
-    {
-      id: 6,
-      name: "David Kim",
-      role: "Analyst",
-      department: "Finance",
-      email: "david.kim@company.com",
-    },
+    { id: 1, name: "John Doe", role: "Administrator", department: "IT", email: "john.doe@company.com" },
+    { id: 2, name: "Sarah Wilson", role: "HR Manager", department: "Human Resources", email: "sarah.wilson@company.com" },
+    { id: 3, name: "Michael Chen", role: "Developer", department: "Engineering", email: "michael.chen@company.com" },
+    { id: 4, name: "Emma Davis", role: "Designer", department: "Design", email: "emma.davis@company.com" },
+    { id: 5, name: "Alice Cooper", role: "Project Manager", department: "Operations", email: "alice.cooper@company.com" },
+    { id: 6, name: "David Kim", role: "Analyst", department: "Finance", email: "david.kim@company.com" },
   ];
 
-  // User profile data
   const userProfile = user;
 
-  // Handle search functionality
   const handleSearch = (value) => {
     setSearchTerm(value);
     if (value.trim() === "") {
@@ -89,21 +50,18 @@ const Dashboard = ({ user, onLogout }) => {
     }
   };
 
-  // Handle notification click
   const handleNotificationClick = () => {
     setNotifications(0);
-    // Add notification logic here
   };
 
-  // Handle user profile click
   const handleUserProfileClick = () => {
     setShowUserDialog(true);
   };
 
-  // Close dialog
   const closeDialog = () => {
     setShowUserDialog(false);
   };
+
   const userActivities = [
     { label: "Posts this week", value: "12" },
     { label: "Messages sent", value: "45" },
@@ -117,69 +75,38 @@ const Dashboard = ({ user, onLogout }) => {
   ];
 
   const forYouItems = [
-    {
-      name: "Sarah Wilson",
-      action: "Just completed the quarterly review...",
-      time: "2 hours ago",
-      avatar: "SW",
-    },
-    {
-      name: "Michael Chen",
-      action: "New project kickoff meeting...",
-      time: "3 hours ago",
-      avatar: "MC",
-    },
-    {
-      name: "Emma Davis",
-      action: "Team building event next week...",
-      time: "5 hours ago",
-      avatar: "ED",
-    },
+    { name: "Sarah Wilson", action: "Just completed the quarterly review...", time: "2 hours ago", avatar: "SW" },
+    { name: "Michael Chen", action: "New project kickoff meeting...", time: "3 hours ago", avatar: "MC" },
+    { name: "Emma Davis", action: "Team building event next week...", time: "5 hours ago", avatar: "ED" },
   ];
 
   const recentActivities = [
-    {
-      user: "Alice Cooper",
-      action: "posted a new update",
-      time: "2 hours ago",
-      avatar: "AC",
-    },
-    {
-      user: "David Kim",
-      action: "sent a message",
-      time: "3 hours ago",
-      avatar: "DK",
-    },
-    {
-      user: "Sarah Wilson",
-      action: "completed a task",
-      time: "5 hours ago",
-      avatar: "SW",
-    },
+    { user: "Alice Cooper", action: "posted a new update", time: "2 hours ago", avatar: "AC" },
+    { user: "David Kim", action: "sent a message", time: "3 hours ago", avatar: "DK" },
+    { user: "Sarah Wilson", action: "completed a task", time: "5 hours ago", avatar: "SW" },
   ];
 
   return (
     <div className="flex-1 bg-gray-50 min-h-screen">
-      <div className="container-main py-4">
-        {/* Header */}
-        <div className="flex justify-between items-start mb-6 animate-fade-in">
+      <div className="container-main py-4 px-4 sm:px-6 lg:px-8"> {/* ADDED responsive padding */}
+        <div className="flex flex-col lg:flex-row justify-between items-start gap-4 mb-6 animate-fade-in"> {/* CHANGED: made responsive with flex-col on small screens */}
           <div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
+            <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent"> {/* CHANGED: responsive text size */}
               Dashboard
             </h1>
-            <p className="text-gray-600 mt-1">
-              Welcome {user?.name || 'User'}! Here what's happening today.
+            <p className="text-gray-600 mt-1 text-sm sm:text-base"> {/* CHANGED: responsive text */}
+              Welcome {user?.name || 'User'}! Here's what's happening today.
             </p>
           </div>
 
-          <div className="flex items-center space-x-3">
-            <div className="relative" ref={searchRef}>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-3 space-y-3 sm:space-y-0 w-full sm:w-auto"> {/* CHANGED: responsive layout for search and icons */}
+            <div className="relative w-full sm:w-64" ref={searchRef}> {/* CHANGED: responsive search input width */}
               <input
                 type="text"
                 placeholder="Search employees..."
                 value={searchTerm}
                 onChange={(e) => handleSearch(e.target.value)}
-                className="w-64 px-3 py-2 pl-10 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-sm"
+                className="w-full px-3 py-2 pl-10 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-sm"
               />
               <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -190,8 +117,6 @@ const Dashboard = ({ user, onLogout }) => {
                   />
                 </svg>
               </div>
-
-              {/* Search Results Dropdown */}
               {showSearchResults && (
                 <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-xl shadow-xl z-50 max-h-60 overflow-y-auto animate-slide-up">
                   {filteredEmployees.length > 0 ? (
@@ -206,18 +131,11 @@ const Dashboard = ({ user, onLogout }) => {
                       >
                         <div className="flex items-center space-x-3">
                           <div className="w-10 h-10 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-xl flex items-center justify-center text-blue-600 font-semibold text-sm">
-                            {employee.name
-                              .split(" ")
-                              .map((n) => n[0])
-                              .join("")}
+                            {employee.name.split(" ").map((n) => n[0]).join("")}
                           </div>
                           <div>
-                            <p className="text-body-small font-semibold text-gray-900">
-                              {employee.name}
-                            </p>
-                            <p className="text-caption text-gray-500">
-                              {employee.role} • {employee.department}
-                            </p>
+                            <p className="text-body-small font-semibold text-gray-900">{employee.name}</p>
+                            <p className="text-caption text-gray-500">{employee.role} • {employee.department}</p>
                           </div>
                         </div>
                       </div>

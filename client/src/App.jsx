@@ -8,40 +8,36 @@ import Recognition from "./components/Recognition";
 import Events from "./components/Events";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import { FiMenu } from "react-icons/fi"; // Hamburger icon
 import axios from "axios";
-// import "./App.css"; // Removed to avoid conflicts with Tailwind CSS
 
 function App() {
   const [activeComponent, setActiveComponent] = useState("dashboard");
   const [user, setUser] = useState(null);
-  const [authMode, setAuthMode] = useState("login"); // "login" or "register"
+  const [authMode, setAuthMode] = useState("login");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const loadUser = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:5000/api/isvalidUser",
-        { withCredentials: true }
-      );
+      const response = await axios.get("http://localhost:5000/api/isvalidUser", {
+        withCredentials: true,
+      });
       if (response.data.success) {
         setUser(response.data.user);
       } else {
         setUser(null);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("Error loading user:", error);
+    }
   };
 
   useEffect(() => {
     loadUser();
   }, []);
 
-  const handleLogin = (userData) => {
-    setUser(userData);
-  };
-
-  const handleRegister = (userData) => {
-    setUser(userData);
-  };
-
+  const handleLogin = (userData) => setUser(userData);
+  const handleRegister = (userData) => setUser(userData);
   const handleLogout = () => {
     setUser(null);
     setActiveComponent("dashboard");
@@ -54,7 +50,7 @@ function App() {
       case "chat":
         return <Chat user={user} />;
       case "create-post":
-        return <CreatePost  user={user} />;
+        return <CreatePost user={user} />;
       case "posts":
         return <Posts user={user} />;
       case "leaderboard":
@@ -66,36 +62,44 @@ function App() {
     }
   };
 
-  // Show login/register if user is not authenticated
   if (!user) {
-    if (authMode === "login") {
-      return (
-        <Login
-          onLogin={handleLogin}
-          setAuthMode={setAuthMode}
-          setUser={setUser}
-        />
-      );
-    } else {
-      return <Register onRegister={handleRegister} setAuthMode={setAuthMode} />;
-    }
+    return authMode === "login" ? (
+      <Login onLogin={handleLogin} setAuthMode={setAuthMode} setUser={setUser} />
+    ) : (
+      <Register onRegister={handleRegister} setAuthMode={setAuthMode} />
+    );
   }
 
-  // Show main app if user is authenticated
   return (
-    <div className="flex h-screen bg-gray-50">
-      {/* Sidebar */}
-      <div className="flex-shrink-0 w-64 bg-white shadow-lg">
+    <div className="flex flex-col md:flex-row h-screen bg-gray-50">
+      {/* Mobile top bar */}
+      <div className="md:hidden flex items-center justify-between p-4 bg-white shadow-md">
+        <button onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+          <FiMenu size={24} />
+        </button>
+        <span className="text-lg font-semibold">Welcome, {user.name}</span>
+      </div>
+
+      {/* Sidebar for mobile and desktop */}
+      <div
+        className={`fixed md:static z-10 top-0 left-0 h-full w-64 bg-white shadow-lg transition-transform transform ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } md:translate-x-0`}
+      >
         <Sidebar
           activeComponent={activeComponent}
-          setActiveComponent={setActiveComponent}
+          setActiveComponent={(comp) => {
+            setActiveComponent(comp);
+            setIsSidebarOpen(false); // auto-close on mobile
+          }}
           user={user}
           onLogout={handleLogout}
           setUser={setUser}
         />
       </div>
-      {/* Main Content */}
-      <div className="flex-1 overflow-auto bg-gray-50">{renderComponent()}</div>
+
+      {/* Main content area */}
+      <div className="flex-1 overflow-auto mt-4 md:mt-0 p-4">{renderComponent()}</div>
     </div>
   );
 }

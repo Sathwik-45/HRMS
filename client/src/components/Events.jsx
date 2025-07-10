@@ -113,7 +113,7 @@ const Events = () => {
   const fetchEventsFromDatabase = async () => {
     try {
       console.log("🔄 Fetching events from database...");
-      const response = await fetch("http://localhost:5000/api/events");
+      const response = await (`${import.meta.env.VITE_BASE_URL}/api/events`);
       console.log("📡 Response status:", response.status);
 
       const result = await response.json();
@@ -168,8 +168,7 @@ const Events = () => {
     try {
       console.log("🗑️ Deleting event with ID:", eventId);
 
-      const response = await fetch(
-        `http://localhost:5000/api/events/${eventId}`,
+      const response = awaitfetch(`${import.meta.env.VITE_BASE_URL}/api/events/${eventId}`,
         {
           method: "DELETE",
         }
@@ -240,13 +239,14 @@ const Events = () => {
         };
 
         // Send data to backend API
-        const response = await fetch("http://localhost:5000/api/events", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(eventData),
-        });
+       const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/events`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify(data), // assuming `data` is your event data
+});
+
 
         const result = await response.json();
 
