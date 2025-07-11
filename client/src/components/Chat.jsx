@@ -305,10 +305,10 @@ const Chat = ({ user }) => {
     return [];
   };
 
-  return (
-    <div className="flex h-[90vh] border border-gray-300 rounded-lg overflow-hidden bg-white shadow-lg">
+  return (<div className="flex flex-col md:flex-row h-[90vh] border border-gray-300 rounded-lg overflow-hidden bg-white shadow-lg">
       {/* Sidebar */}
-      <div className="w-[320px] border-r border-gray-200 bg-gray-50 flex flex-col">
+   <div className="w-full md:w-[320px] border-r border-gray-200 bg-gray-50 flex flex-col">
+
         {/* Header */}
         <div className="p-4 border-b border-gray-200 bg-white">
           <h2 className="text-xl font-semibold text-gray-800">Chat</h2>
