@@ -45,7 +45,7 @@ const Chat = ({ user }) => {
 
     console.log('Initializing socket connection for user:', userId);
 
-    const newSocket = io('${import.meta.env.VITE_BASE_URL}', {
+    const newSocket = io(`${import.meta.env.VITE_BASE_URL}`, {
       withCredentials: true,
     });
 
@@ -133,7 +133,7 @@ const Chat = ({ user }) => {
   // Load global messages
   const loadMessages = async () => {
     try {
-      const response = await axios.get('${import.meta.env.VITE_BASE_URL}/api/chat/messages', {
+      const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/chat/messages`, {
         withCredentials: true,
       });
       if (response.data.success) {
@@ -148,7 +148,7 @@ const Chat = ({ user }) => {
   const loadUsers = async () => {
     try {
       console.log('Loading users...');
-      const response = await axios.get('${import.meta.env.VITE_BASE_URL}/api/chat/users', {
+      const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/chat/users`, {
         withCredentials: true,
       });
       console.log('Users response:', response.data);
@@ -560,7 +560,7 @@ const Chat = ({ user }) => {
               };
 
               try {
-                const response = await axios.post('${import.meta.env.VITE_BASE_URL}/api/chat/rooms', roomData, {
+                const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/chat/rooms`, roomData, {
                   withCredentials: true,
                 });
                 if (response.data.success) {
