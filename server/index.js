@@ -25,7 +25,7 @@ const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:3000",
   "http://localhost:5174",
-  "https://your-vercel-app.vercel.app" // ✅ Add your deployed frontend URL
+  "https://hrms-rust.vercel.app" // ✅ Add your deployed frontend URL
 ];
 
 const io = socketIo(server, {

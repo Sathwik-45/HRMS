@@ -307,6 +307,7 @@ const Chat = ({ user }) => {
     return [];
   };
 
+<<<<<<< HEAD
   return (
     <div className="flex h-[90vh] border border-gray-300 rounded-lg overflow-hidden bg-white shadow-lg relative">
       {/* Mobile Chat Header */}
@@ -344,6 +345,12 @@ const Chat = ({ user }) => {
         flex flex-col z-50 lg:z-auto
         transition-transform duration-300 ease-in-out
       `}>
+=======
+  return (<div className="flex flex-col md:flex-row h-[90vh] border border-gray-300 rounded-lg overflow-hidden bg-white shadow-lg">
+      {/* Sidebar */}
+   <div className="w-full md:w-[320px] border-r border-gray-200 bg-gray-50 flex flex-col">
+
+>>>>>>> 528e0e892e94954058b6414083093b4c7617b9a2
         {/* Header */}
         <div className="p-3 lg:p-4 border-b border-gray-200 bg-white flex-shrink-0 flex items-center justify-between">
           <h2 className="text-lg lg:text-xl font-semibold text-gray-800">Chat</h2>
