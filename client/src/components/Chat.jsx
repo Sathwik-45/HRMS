@@ -307,50 +307,10 @@ const Chat = ({ user }) => {
     return [];
   };
 
-<<<<<<< HEAD
-  return (
-    <div className="flex h-[90vh] border border-gray-300 rounded-lg overflow-hidden bg-white shadow-lg relative">
-      {/* Mobile Chat Header */}
-      <div className="lg:hidden absolute top-0 left-0 right-0 z-30 bg-white border-b border-gray-200 p-3 flex items-center justify-between">
-        <button
-          onClick={() => setShowMobileSidebar(!showMobileSidebar)}
-          className="p-2 hover:bg-gray-100 rounded-lg transition-colors btn-touch"
-        >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
-        <h2 className="text-lg font-semibold text-gray-800">
-          {selectedChat.type === 'global' ? 'Global Chat' :
-           selectedChat.type === 'private' ? selectedChat.user?.name :
-           selectedChat.room?.name}
-        </h2>
-        <div className="w-9"></div> {/* Spacer for centering */}
-      </div>
-
-      {/* Mobile Overlay */}
-      {showMobileSidebar && (
-        <div
-          className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-40"
-          onClick={() => setShowMobileSidebar(false)}
-        />
-      )}
-
-      {/* Sidebar */}
-      <div className={`
-        ${showMobileSidebar ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-        fixed lg:relative lg:flex
-        w-[280px] lg:w-[320px] h-full
-        border-r border-gray-200 bg-gray-50
-        flex flex-col z-50 lg:z-auto
-        transition-transform duration-300 ease-in-out
-      `}>
-=======
   return (<div className="flex flex-col md:flex-row h-[90vh] border border-gray-300 rounded-lg overflow-hidden bg-white shadow-lg">
       {/* Sidebar */}
    <div className="w-full md:w-[320px] border-r border-gray-200 bg-gray-50 flex flex-col">
 
->>>>>>> 528e0e892e94954058b6414083093b4c7617b9a2
         {/* Header */}
         <div className="p-3 lg:p-4 border-b border-gray-200 bg-white flex-shrink-0 flex items-center justify-between">
           <h2 className="text-lg lg:text-xl font-semibold text-gray-800">Chat</h2>
