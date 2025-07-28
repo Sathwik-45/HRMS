@@ -36,8 +36,8 @@ const CreatePost = () => {
   // Fetch posts from backend on mount
   useEffect(() => {
     // UPDATED: Changed endpoint from /api/events to /api/createposts
-    axios
-      .get("${import.meta.env.VITE_BASE_URL}/api/createposts")
+axios.get(`${import.meta.env.VITE_BASE_URL}/api/createposts`)
+
       .then((res) => {
         setPosts(res.data);
       })
@@ -134,7 +134,8 @@ const CreatePost = () => {
         }
       } else {
         // UPDATED: Changed endpoint from /api/events to /api/createposts
-        res = await axios.post("${import.meta.env.VITE_BASE_URL}/api/createposts", formData, {
+        res = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/createposts`
+, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
         setPosts([res.data, ...posts]);

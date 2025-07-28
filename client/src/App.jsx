@@ -8,16 +8,16 @@ import Recognition from "./components/Recognition";
 import Events from "./components/Events";
 import Login from "./components/Login";
 import Register from "./components/Register";
-import { FiMenu } from "react-icons/fi";
 import axios from "axios";
+// import "./App.css"; // Removed to avoid conflicts with Tailwind CSS
 
 function App() {
   const [activeComponent, setActiveComponent] = useState("dashboard");
   const [user, setUser] = useState(null);
-  const [authMode, setAuthMode] = useState("login");
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [authMode, setAuthMode] = useState("login"); // "login" or "register"
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const BASE_URL = import.meta.env.VITE_BASE_URL;
+   const BASE_URL = import.meta.env.VITE_BASE_URL;
 
   // Check if user is already authenticated
   const loadUser = async () => {
@@ -25,31 +25,38 @@ function App() {
       const response = await axios.get(`${BASE_URL}/api/isvalidUser`, {
         withCredentials: true,
       });
-
       if (response.data.success) {
         setUser(response.data.user);
       } else {
         setUser(null);
       }
-    } catch (error) {
-      if (error.response?.status === 401) {
-        // Not logged in
-        setUser(null);
-      } else {
-        console.error("❌ Error loading user:", error);
-      }
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
     loadUser();
   }, []);
 
-  const handleLogin = (userData) => setUser(userData);
-  const handleRegister = (userData) => setUser(userData);
+  const handleLogin = (userData) => {
+    setUser(userData);
+  };
+
+  const handleRegister = (userData) => {
+    setUser(userData);
+  };
+
   const handleLogout = () => {
     setUser(null);
     setActiveComponent("dashboard");
+    setIsMobileMenuOpen(false);
+  };
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
   };
 
   const renderComponent = () => {
@@ -59,7 +66,7 @@ function App() {
       case "chat":
         return <Chat user={user} />;
       case "create-post":
-        return <CreatePost user={user} />;
+        return <CreatePost  user={user} />;
       case "posts":
         return <Posts user={user} />;
       case "leaderboard":
@@ -71,48 +78,72 @@ function App() {
     }
   };
 
+  const handleComponentChange = (componentId) => {
+    setActiveComponent(componentId);
+    closeMobileMenu(); // Close mobile menu when navigating
+  };
+
+  // Show login/register if user is not authenticated
   if (!user) {
-    return authMode === "login" ? (
-      <Login
-        onLogin={handleLogin}
-        setAuthMode={setAuthMode}
-        setUser={setUser}
-      />
-    ) : (
-      <Register onRegister={handleRegister} setAuthMode={setAuthMode} />
-    );
+    if (authMode === "login") {
+      return (
+        <Login
+          onLogin={handleLogin}
+          setAuthMode={setAuthMode}
+          setUser={setUser}
+        />
+      );
+    } else {
+      return <Register onRegister={handleRegister} setAuthMode={setAuthMode} />;
+    }
   }
 
+  // Show main app if user is authenticated
   return (
-    <div className="flex flex-col md:flex-row h-screen bg-gray-50">
-      {/* Mobile top bar */}
-      <div className="md:hidden flex items-center justify-between p-4 bg-white shadow-md">
-        <button onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
-          <FiMenu size={24} />
-        </button>
-        <span className="text-lg font-semibold">Welcome, {user.name}</span>
-      </div>
+    <div className="flex h-screen bg-gray-50 relative">
+      {/* Mobile Menu Button */}
+      <button
+        onClick={toggleMobileMenu}
+        className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow"
+        aria-label="Toggle menu"
+      >
+        <div className="w-6 h-6 flex flex-col justify-center items-center">
+          <span className={`block w-5 h-0.5 bg-gray-600 transition-all duration-300 ${isMobileMenuOpen ? 'rotate-45 translate-y-1' : '-translate-y-1'}`}></span>
+          <span className={`block w-5 h-0.5 bg-gray-600 transition-all duration-300 ${isMobileMenuOpen ? 'opacity-0' : 'opacity-100'}`}></span>
+          <span className={`block w-5 h-0.5 bg-gray-600 transition-all duration-300 ${isMobileMenuOpen ? '-rotate-45 -translate-y-1' : 'translate-y-1'}`}></span>
+        </div>
+      </button>
+
+      {/* Mobile Overlay */}
+      {isMobileMenuOpen && (
+        <div
+          className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity"
+          onClick={closeMobileMenu}
+        />
+      )}
 
       {/* Sidebar */}
-      <div
-        className={`fixed md:static z-10 top-0 left-0 h-full w-64 bg-white shadow-lg transition-transform transform ${
-          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0`}
-      >
+      <div className={`
+        fixed lg:relative lg:translate-x-0
+        ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
+        transition-transform duration-300 ease-in-out
+        w-64 bg-white shadow-lg z-50 lg:z-auto
+        h-full lg:flex-shrink-0
+      `}>
         <Sidebar
           activeComponent={activeComponent}
-          setActiveComponent={(comp) => {
-            setActiveComponent(comp);
-            setIsSidebarOpen(false);
-          }}
+          setActiveComponent={handleComponentChange}
           user={user}
           onLogout={handleLogout}
           setUser={setUser}
+          isMobile={true}
+          closeMobileMenu={closeMobileMenu}
         />
       </div>
 
-      {/* Main content area */}
-      <div className="flex-1 overflow-auto mt-4 md:mt-0 p-4">
+      {/* Main Content */}
+      <div className="flex-1 overflow-auto bg-gray-50 lg:ml-0">
+        <div className="lg:hidden h-16"></div> {/* Spacer for mobile menu button */}
         {renderComponent()}
       </div>
     </div>

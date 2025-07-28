@@ -29,7 +29,7 @@ const Recognition = () => {
     category: ''
   })
 
-  const API_BASE_URL = 'http://localhost:5000/api'
+  const API_BASE_URL = `${import.meta.env.VITE_BASE_URL}/api`
 
   // Fetch recognitions from API
   const fetchRecognitions = async () => {

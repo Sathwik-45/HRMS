@@ -32,7 +32,7 @@ const Register = ({ setAuthMode }) => {
     setLoding(true);
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/signUp",
+        `${import.meta.env.VITE_BASE_URL}/api/signUp`,
         data
       );
       toast(response.data.message || "Internal Server Error");
